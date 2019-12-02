@@ -8,5 +8,4 @@ func main() {
 	fmt.Println(arr)
 	var arrayS = sorting.BubbleSort(arr, len(arr))
 	fmt.Println(arrayS)
-
 }
