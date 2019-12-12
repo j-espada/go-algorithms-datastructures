@@ -10,6 +10,20 @@ type Interface interface {
 	  	Swap(i, j int)
 }
 
+func BubbleSortGeneric(array Interface) Interface {
+	var n = array.Len()
+	var arraySize = n - 1
+	for i := 0; i < arraySize; i++ {
+		for j := arraySize; j >= i + 1 ; j-- {
+			var k = j - 1
+			if array.Less(j,k) {
+				array.Swap(j,k)
+			}
+		}
+	}
+	return array
+}
+
 func BubbleSort(array []int, n int) []int {
 	var arraySize = n - 1
 	for i := 0; i < arraySize; i++ {
