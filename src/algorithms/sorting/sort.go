@@ -1,22 +1,25 @@
 package sorting
 
+type Interface interface {
+	 	// Len is the number of elements in the collection.
+	 	Len() int
+	  	// Less reports whether the element with
+	  	// index i should sort before the element with index j.
+	  	Less(i, j int) bool
+	 	// Swap swaps the elements with indexes i and j.
+	  	Swap(i, j int)
+}
 
 func BubbleSort(array []int, n int) []int {
-
 	var arraySize = n - 1
-
 	for i := 0; i < arraySize; i++ {
 		for j := arraySize; j >= i + 1 ; j-- {
 			var k = j - 1
 			if array[j] < array[k] {
-				//var temp = array[k]
 				exchange(array, k, j)
-				//array[j - 1] = array[j]
-				//array[j] = temp
 			}
 		}
 	}
-
 	return array
 }
 
