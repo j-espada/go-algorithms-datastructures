@@ -24,7 +24,7 @@ func BubbleSortGeneric(array Interface) Interface {
 	return array
 }
 
-func BubbleSort(array []int, n int) []int {
+func BubbleSortInteger(array []int, n int) []int {
 	var arraySize = n - 1
 	for i := 0; i < arraySize; i++ {
 		for j := arraySize; j >= i + 1 ; j-- {
@@ -32,6 +32,20 @@ func BubbleSort(array []int, n int) []int {
 			if array[j] < array[k] {
 				exchange(array, k, j)
 			}
+		}
+	}
+	return array
+}
+
+func InsertionSortInteger(array []int, n int) []int {
+	var arraySize = n - 1
+	for j := 0; j <= arraySize; j++  {
+		var smallest = j
+		for i:= j + 1; i <= arraySize; i++ {
+			if array[i] < array[smallest] {
+				smallest = i
+			}
+			exchange(array, j , i)
 		}
 	}
 	return array
