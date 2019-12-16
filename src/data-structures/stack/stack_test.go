@@ -15,16 +15,16 @@ func (a NodeInterfaceImpl) String() string {
 
 func TestCreateStack(t *testing.T) {
 
-	cap := 10
-	stack := CreateStack(cap)
+	stackCapacity := 10
+	stack := CreateStack(stackCapacity)
 
-	if stack.capacity != cap {
-		t.Error("Expected ", cap, "got ",stack.capacity)
+	if stack.capacity != stackCapacity {
+		t.Error("Expected ", stackCapacity, "got ",stack.capacity)
 	}
 
 
 	if stack.top != 0 {
-		t.Error("Expected 0", cap, "got ", stack.top)
+		t.Error("Expected 0", stackCapacity, "got ", stack.top)
 	}
 
 }
