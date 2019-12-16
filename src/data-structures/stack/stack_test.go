@@ -18,7 +18,7 @@ func (a NodeInterfaceImpl) String() string {
 func generateData(n int) [] *Node {
 	var data = make([] *Node, n)
 	for i := 0; i < n  ; i++  {
-		data[i] = &Node{Value:&NodeInterfaceImpl{Value:rand.Int()%MaxValue} }
+		data[i] = &Node{Value:&NodeInterfaceImpl{Value:rand.Int() % MaxValue} }
 	}
 	return data
 }
@@ -34,11 +34,15 @@ func TestCreateStack(t *testing.T) {
 	stack := CreateStack(stackCapacity)
 
 	if stack.capacity != stackCapacity {
-		t.Error("Expected ", stackCapacity, "got ",stack.capacity)
+		t.Error("Expected: ", stackCapacity, "got: ",stack.capacity)
 	}
 
 	if stack.top != 0 {
-		t.Error("Expected 0", stackCapacity, "got ", stack.top)
+		t.Error("Expected: 0", stackCapacity, "got: ", stack.top)
+	}
+
+	if stack.IsEmpty() != true {
+		t.Error("Expected: true", "got: false")
 	}
 }
 
@@ -49,11 +53,15 @@ func TestStack_Push(t *testing.T) {
 	populateStack(stack, data)
 	for i:= 0; i < n ;i ++  {
 		if stack.stack[i] != data[i] {
-			t.Error("Expected ", data[i], "got ", stack.stack[i])
+			t.Error("Expected: ", data[i], "got: ", stack.stack[i])
 		}
 	}
 
 	if stack.top != n {
-		t.Error("Expected ", n, "got ", stack.top)
+		t.Error("Expected: ", n, "got: ", stack.top)
 	}
+}
+
+func TestStack_IsEmpty(t *testing.T) {
+
 }
