@@ -12,6 +12,10 @@ type Node struct {
 	Value NodeInterface
 }
 
+func (n *Node) String() string{
+	return fmt.Sprint(n.Value)
+}
+
 type Stack struct{
 	capacity int
 	top int
@@ -20,14 +24,14 @@ type Stack struct{
 
 func CreateStack(capacity int) *Stack {
 	return &Stack{capacity: capacity,
-		          stack:make([]*Node, capacity),
-		          top:0}
+		          stack: make([]*Node, capacity),
+		          top: 0}
 }
 
 func CreateStackDefaultCapacity() *Stack {
 	return &Stack{capacity: DefaultSize,
-		          stack:make([]*Node, DefaultSize),
-		          top:0}
+		          stack: make([]*Node, DefaultSize),
+		          top: 0}
 }
 
 func (stack *Stack) IsEmpty() bool {
@@ -37,11 +41,21 @@ func (stack *Stack) IsEmpty() bool {
 func (stack *Stack) Push(node *Node) {
 
 	if stack.top == stack.capacity - 1 {
-		stack.stack = append(stack.stack, node)
-	}else {
-		stack.stack[stack.top] = node
-		stack.top = stack.top + 1
+		stack.duplicateSizeAndCopy()
 	}
+
+	stack.stack[stack.top] = node
+	stack.top = stack.top + 1
+}
+
+func (stack *Stack) duplicateSizeAndCopy()  {
+	var newCap = stack.capacity*2
+	var newStackArray = make([]*Node, newCap)
+	for i:= 0; i < stack.capacity; i++  {
+		newStackArray[i] = stack.stack[i]
+	}
+	stack.capacity = newCap
+	stack.stack = newStackArray
 }
 
 func (stack *Stack) Pop() *Node{
@@ -58,10 +72,6 @@ func (stack *Stack) String() string  {
 	var str = ""
 	str += fmt.Sprintln("Capacity: ", stack.capacity)
 	str += fmt.Sprintln("Top: ", stack.top)
-	for i:= 0; i <= stack.top ;  i++{
-		if stack.stack[i] != nil {
-			str += fmt.Sprintln("i: ", i, " ", stack.stack[i])
-		}
-	}
+	str += fmt.Sprint(stack.stack)
 	return str
 }
