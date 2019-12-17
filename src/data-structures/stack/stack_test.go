@@ -2,8 +2,8 @@ package stack
 
 import (
 	"fmt"
-	"testing"
 	"math/rand"
+	"testing"
 )
 
 type NodeInterfaceImpl struct {
@@ -51,6 +51,10 @@ func TestStack_Push(t *testing.T) {
 	}
 
 	if stack.top != n {
-		    t.Error()
+		t.Error("Expected ", n, "got ", stack.top)
 	}
+}
+
+func TestStack_Pop(t *testing.T) {
+
 }
