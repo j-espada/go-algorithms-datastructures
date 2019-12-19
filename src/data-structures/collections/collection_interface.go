@@ -1,7 +1,9 @@
 package collections
 
 type CollectionItem interface {
+	// Compare if two CollectionItem are equal returns true if equal false otherwise
 	Equals(item CollectionItem) bool
+	// Compare two CollectionItems return 0 if equal, return 1 if bigger and return -1 if lower
 	Compare(item CollectionItem) int
 }
 
@@ -28,4 +30,8 @@ type CollectionInterface interface {
 	SubList(fromIndex int, toIndex int) CollectionInterface
 	// Returns an array containing all of the elements in this list in proper sequence (from first to last element)
 	ToArray() []CollectionItem
+	// Returns the maximum element in the list
+	Max() CollectionItem
+	// Returns the minimum element in the list
+	Min() CollectionItem
 }

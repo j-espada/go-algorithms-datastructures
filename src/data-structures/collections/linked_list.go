@@ -143,11 +143,12 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size{
 		return nil
 	}
+
 	if toIndex < fromIndex || toIndex > list.size {
 		return nil
 	}
 
-	var subList = createLinkedList()
+	var subList *LinkedList = createLinkedList()
 	var i = 0
 	var currentNode = list.head
 
@@ -172,4 +173,14 @@ func (list *LinkedList) ToArray() []CollectionItem {
 		k++
 	}
 	return arr
+}
+
+// Returns the maximum element in the list
+func Max() CollectionItem {
+	return nil
+}
+
+// Returns the minimum element in the list
+func Min() CollectionItem {
+	return nil
 }
