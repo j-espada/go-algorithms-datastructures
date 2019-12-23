@@ -14,14 +14,12 @@ func createNode(item CollectionItem) *Node{
 
 type LinkedList struct {
 	head *Node
-	tail *Node
 	size int
 }
 
-func createLinkedList() *LinkedList  {
+func CreateLinkedList() *LinkedList  {
 	return &LinkedList{
-		nil,
-		nil,
+		createNode(nil),
 		0,
 	}
 }
@@ -37,6 +35,7 @@ func (list *LinkedList) Add(item CollectionItem) {
 	}
 
 	currentNode.next = node
+	list.size ++
 }
 
 // Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator
@@ -148,7 +147,7 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 		return nil
 	}
 
-	var subList *LinkedList = createLinkedList()
+	var subList *LinkedList = CreateLinkedList()
 	var i = 0
 	var currentNode = list.head
 
@@ -176,11 +175,11 @@ func (list *LinkedList) ToArray() []CollectionItem {
 }
 
 // Returns the maximum element in the list
-func Max() CollectionItem {
+func (list *LinkedList) Max() CollectionItem {
 	return nil
 }
 
 // Returns the minimum element in the list
-func Min() CollectionItem {
+func (list *LinkedList) Min() CollectionItem {
 	return nil
 }
