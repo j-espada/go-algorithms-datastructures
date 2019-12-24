@@ -1,31 +1,12 @@
 package collections
 
-import "errors"
-
 type CollectionItem interface {
 	// Compare if two CollectionItem are equal returns true if equal false otherwise
 	Equals(item CollectionItem) bool
 	// Compare two CollectionItems return 0 if equal, return 1 if bigger and return -1 if lower
 	Compare(item CollectionItem) (int, error)
-}
-type T struct {
-	Value int
-}
-
-func (item T) Equals(other CollectionItem) bool {
-	otherT, ok := other.(T)
-	if !ok {
-		return false
-	}
-	return otherT.Value == item.Value
-}
-
-func (item T) Compare(other CollectionItem) (int, error) {
-	otherT, ok := other.(T)
-	if !ok {
-		return -1, errors.New("error")
-	}
-	return otherT.Value - item.Value, nil
+	// To String method
+	String() string
 }
 
 type CollectionInterface interface {
