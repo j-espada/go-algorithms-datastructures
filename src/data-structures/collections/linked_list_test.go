@@ -242,3 +242,29 @@ func TestLinkedList_RemoveMiddleElm(t *testing.T) {
 		t.Error("Expected: ", false, " got: ", contains)
 	}
 }
+
+func TestLinkedList_Get(t *testing.T) {
+	var linkedList = CreateLinkedList()
+	var n = 10
+	var dataToInsert = generateData(n)
+	insertData(linkedList, dataToInsert)
+	var get = linkedList.Get(-1)
+
+	if nil != linkedList.Get(-1) {
+		t.Error("Expected: ", nil, " got: ", get)
+
+	}
+
+	get = linkedList.Get(n + 1)
+	if nil != get {
+		t.Error("Expected: ", nil, " got: ", get)
+
+	}
+
+	get = linkedList.Get(n + 1)
+	if nil != get {
+		t.Error("Expected: ", nil, " got: ", get)
+
+	}
+
+}
