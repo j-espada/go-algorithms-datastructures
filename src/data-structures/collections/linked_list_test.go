@@ -275,7 +275,7 @@ func TestLinkedList_RemoveNotExistingElm(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
 
-	var toBeRemoved = T{Value:2000000000}
+	var toBeRemoved = T{Value:1}
 	linkedList.Remove(toBeRemoved)
 	var contains = linkedList.Contains(toBeRemoved)
 

@@ -154,10 +154,15 @@ func (list *LinkedList) Remove(item CollectionItem) {
 
 		previous = current
 		current = current.next
-		next = current.next
+		// in case that we have reached the end of the list without finding the item to remove
+		if current != nil{
+			next = current.next
+		} else {
+			next = nil
+		}
 	}
 
-	if !found {
+	if found == false {
 		return
 	}
 
