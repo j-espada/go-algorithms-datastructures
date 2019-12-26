@@ -10,6 +10,7 @@ type Node struct {
 }
 
 func createNode(item CollectionItem) *Node{
+
   return &Node{
 	  item,
 	  nil,
@@ -17,6 +18,7 @@ func createNode(item CollectionItem) *Node{
 }
 
 func (node *Node) String() string {
+
 	return fmt.Sprint("Value: ", node.Value.String())
 }
 
@@ -24,8 +26,9 @@ type LinkedList struct {
 	head *Node
 	size int
 }
-
+// Create a linked list
 func CreateLinkedList() *LinkedList  {
+
 	return &LinkedList{
 		createNode(nil),
 		0,
@@ -52,6 +55,7 @@ func (list *LinkedList) Add(item CollectionItem) {
 
 // Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator
 func (list *LinkedList) AddAll(collectionInterface CollectionInterface) {
+
 	var size = collectionInterface.Size()
 	for i:= 0; i < size; i++  {
 		list.Add(collectionInterface.Get(i))
@@ -60,6 +64,7 @@ func (list *LinkedList) AddAll(collectionInterface CollectionInterface) {
 
 // Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
 func (list *LinkedList) IndexOf(item CollectionItem) int {
+
 	var i = 0
 	var currentNode = list.head.next
 	var elm CollectionItem = nil
@@ -163,7 +168,7 @@ func (list *LinkedList) Remove(item CollectionItem) {
 	} else if current == list.head.next {
 		list.head.next = next
 	}
-	list.size --
+	list.size--
 }
 
 // Returns the element at the specified position in this list.
@@ -205,10 +210,13 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 
 	for currentNode != nil  {
 
-		if i >= fromIndex && i <= toIndex {
+		if i >= fromIndex && i < toIndex {
 			subList.Add(currentNode.Value)
+		} else if i > toIndex {
+			break
 		}
 		i++
+		currentNode = currentNode.next
 	}
 
 	return subList
@@ -216,6 +224,7 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 
 // Returns an array containing all of the elements in this list in proper sequence (from first to last element)
 func (list *LinkedList) ToArray() []CollectionItem {
+
 	var arr = make([]CollectionItem, list.size)
 	var k = 0
 	var currentNode = list.head.next
@@ -227,20 +236,54 @@ func (list *LinkedList) ToArray() []CollectionItem {
 	return arr
 }
 
-// Returns the maximum element in the list
+// Returns the maximum element in the list or nil if list is empty
 func (list *LinkedList) Max() CollectionItem {
-	return nil
+
+	if list.size == 0 {
+		return nil
+	}else {
+
+		var currentNode = list.head.next
+		var max CollectionItem = nil
+
+		for currentNode.next != nil  {
+
+			if max == nil || max.Compare(currentNode.Value) > 0 {
+				max = currentNode.Value
+			}
+			currentNode = currentNode.next
+		}
+
+		return max
+	}
 }
 
-// Returns the minimum element in the list
+// Returns the minimum element in the list or nil if list is empty
 func (list *LinkedList) Min() CollectionItem {
-	return nil
+
+	if list.size == 0 {
+		return nil
+	}else {
+		var currentNode = list.head.next
+		var min CollectionItem = nil
+
+		for currentNode.next != nil  {
+
+			if min == nil || min.Compare(currentNode.Value) < 0 {
+				min = currentNode.Value
+			}
+			currentNode = currentNode.next
+
+		}
+
+		return min
+	}
 }
 
 func (list *LinkedList) String() string {
+
 	var str = ""
 	var cNode = list.head.next
-
 	for cNode != nil  {
 		str += cNode.String() + "\n"
 		cNode = cNode.next
