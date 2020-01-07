@@ -1,53 +1,11 @@
 package collections
 
 import (
-	"fmt"
-	"math/rand"
 	"reflect"
 	"testing"
 )
 
-const MaxValue = 20
-
-type T struct {
-	Value int
-}
-
-func (item T) Equals(other CollectionItem) bool {
-	otherT, ok := other.(T)
-	if !ok {
-		return false
-	}
-	return otherT.Value == item.Value
-}
-
-func (item T) Compare(other CollectionItem) int {
-	otherT, ok := other.(T)
-	if !ok {
-		panic("The two types must be the same")
-	}
-	return otherT.Value - item.Value
-}
-
-func (item T) String() string {
-	return fmt.Sprint(item.Value)
-}
-
-func generateData(n int) [] T {
-	var data = make([] T, n)
-	for i := 0; i < n  ; i++  {
-		data[i] = T{Value:rand.Int() % MaxValue}
-	}
-	return data
-}
-
-func insertData(linkedList *LinkedList, data []T) {
-	for _, data := range data {
-		linkedList.Add(data)
-	}
-}
-
-func TestCreateNode(t *testing.T)  {
+func TestCreateNode(t *testing.T) {
 	var val = T{Value: 10}
 	var node = createNode(val)
 	if node.Value != val {
@@ -59,7 +17,7 @@ func TestCreateLinkedList(t *testing.T) {
 	var linkedList = CreateLinkedList()
 	var expectedSize = 0
 
-	if  expectedSize != linkedList.size{
+	if expectedSize != linkedList.size {
 		t.Error("Expected: ", expectedSize, "got: ", linkedList.size)
 	}
 
@@ -71,7 +29,6 @@ func TestCreateLinkedList(t *testing.T) {
 		t.Error("Expected: ", nil, "got: ", linkedList.head.Value)
 	}
 }
-
 
 func TestLinkedList_Add(t *testing.T) {
 	var linkedList = CreateLinkedList()
@@ -85,8 +42,8 @@ func TestLinkedList_Add(t *testing.T) {
 
 	var k = 0
 	var currentNode = linkedList.head.next
-	for currentNode != nil  {
-		if ! currentNode.Value.Equals(dataToInsert[k]) {
+	for currentNode != nil {
+		if !currentNode.Value.Equals(dataToInsert[k]) {
 			t.Error("Expected: ", dataToInsert[k], "got: ", currentNode.Value)
 		}
 		currentNode = currentNode.next
@@ -127,7 +84,7 @@ func TestLinkedList_IndexOf(t *testing.T) {
 	var elm = T{Value: 10}
 	var posLst = linkedList.IndexOf(elm)
 
-	if pos != posLst{
+	if pos != posLst {
 		t.Error("Expected: ", pos, "got: ", posLst)
 	}
 }
@@ -142,7 +99,7 @@ func TestLinkedList_IndexOf_RepeatElm(t *testing.T) {
 	var elm = T{Value: 55}
 	var posLst = linkedList.IndexOf(elm)
 
-	if pos != posLst{
+	if pos != posLst {
 		t.Error("Expected: ", pos, "got: ", posLst)
 	}
 }
@@ -158,7 +115,7 @@ func TestLinkedList_IndexOf_NoElement(t *testing.T) {
 
 	var posLst = linkedList.IndexOf(elm)
 
-	if pos != posLst{
+	if pos != posLst {
 		t.Error("Expected: ", pos, "got: ", posLst)
 	}
 }
@@ -173,7 +130,7 @@ func TestLinkedList_LastIndexOf(t *testing.T) {
 	var elm = T{Value: 10}
 	var posLst = linkedList.LastIndexOf(elm)
 
-	if pos != posLst{
+	if pos != posLst {
 		t.Error("Expected: ", pos, "got: ", posLst)
 	}
 }
@@ -201,7 +158,7 @@ func TestLinkedList_Contains(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
 	insertData(linkedList, dataToInsert)
 
-	var contains = linkedList.Contains(T{Value:10})
+	var contains = linkedList.Contains(T{Value: 10})
 
 	if true != contains {
 		t.Error("Expected: ", true, " got: ", contains)
@@ -215,7 +172,7 @@ func TestLinkedList_RemoveFirstElm(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
 
-	var toBeRemoved = T{Value:10}
+	var toBeRemoved = T{Value: 10}
 	linkedList.Remove(toBeRemoved)
 	var contains = linkedList.Contains(toBeRemoved)
 
@@ -223,8 +180,8 @@ func TestLinkedList_RemoveFirstElm(t *testing.T) {
 		t.Error("Expected: ", false, " got: ", contains)
 	}
 
-	if linkedList.size != len(dataToInsert) - 1 {
-		t.Error("Expected: ", len(dataToInsert) - 1 , " got: ", linkedList.size)
+	if linkedList.size != len(dataToInsert)-1 {
+		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
 
 	}
 }
@@ -235,7 +192,7 @@ func TestLinkedList_RemoveLastElm(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
 
-	var toBeRemoved = T{Value:110}
+	var toBeRemoved = T{Value: 110}
 	linkedList.Remove(toBeRemoved)
 	var contains = linkedList.Contains(toBeRemoved)
 
@@ -243,8 +200,8 @@ func TestLinkedList_RemoveLastElm(t *testing.T) {
 		t.Error("Expected: ", false, " got: ", contains)
 	}
 
-	if linkedList.size != len(dataToInsert) - 1 {
-		t.Error("Expected: ", len(dataToInsert) - 1 , " got: ", linkedList.size)
+	if linkedList.size != len(dataToInsert)-1 {
+		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
 
 	}
 }
@@ -255,7 +212,7 @@ func TestLinkedList_RemoveMiddleElm(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
 
-	var toBeRemoved = T{Value:2}
+	var toBeRemoved = T{Value: 2}
 	linkedList.Remove(toBeRemoved)
 	var contains = linkedList.Contains(toBeRemoved)
 
@@ -263,8 +220,8 @@ func TestLinkedList_RemoveMiddleElm(t *testing.T) {
 		t.Error("Expected: ", false, " got: ", contains)
 	}
 
-	if linkedList.size != len(dataToInsert) - 1 {
-		t.Error("Expected: ", len(dataToInsert) - 1 , " got: ", linkedList.size)
+	if linkedList.size != len(dataToInsert)-1 {
+		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
 
 	}
 }
@@ -275,7 +232,7 @@ func TestLinkedList_RemoveNotExistingElm(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
 
-	var toBeRemoved = T{Value:1}
+	var toBeRemoved = T{Value: 1}
 	linkedList.Remove(toBeRemoved)
 	var contains = linkedList.Contains(toBeRemoved)
 
@@ -284,7 +241,7 @@ func TestLinkedList_RemoveNotExistingElm(t *testing.T) {
 	}
 
 	if linkedList.size != len(dataToInsert) {
-		t.Error("Expected: ", len(dataToInsert) - 1 , " got: ", linkedList.size)
+		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
 
 	}
 }
@@ -317,7 +274,7 @@ func TestLinkedList_Get(t *testing.T) {
 
 func TestLinkedList_SubList(t *testing.T) {
 	var linkedList = CreateLinkedList()
-	var dataToInsert = []T{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4},  {Value: 5},  {Value: 6}}
+	var dataToInsert = []T{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}, {Value: 6}}
 	insertData(linkedList, dataToInsert)
 
 	var sbl = linkedList.SubList(-1, 3)
@@ -369,10 +326,10 @@ func TestLinkedList_Max(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
 	insertData(linkedList, dataToInsert)
 	var max = linkedList.Max()
-	var maxValueData = T{Value:55}
+	var maxValueData = T{Value: 55}
 
 	if max != maxValueData {
-		t.Error("Expected: ", maxValueData , " got: ", max)
+		t.Error("Expected: ", maxValueData, " got: ", max)
 	}
 }
 
@@ -380,7 +337,7 @@ func TestLinkedList_Min(t *testing.T) {
 	var linkedList = CreateLinkedList()
 	var minValEmpty = linkedList.Min()
 
-	if nil != minValEmpty{
+	if nil != minValEmpty {
 		t.Error("Expected: ", nil, " got: ", minValEmpty)
 	}
 
