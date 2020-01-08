@@ -102,7 +102,19 @@ func (list *ArrayList) Capacity() int {
 
 // Removes the first occurrence of the specified element from this list, if it is present
 func (list *ArrayList) Remove(item CollectionItem) {
-
+	var indexItem int = list.IndexOf(item)
+	if indexItem != -1 {
+		var newArr = make([]CollectionItem, list.capacity)
+		var counter = 0
+		for i := 0; i < list.size; i++ {
+			if i != indexItem {
+				newArr[counter] = list.arr[counter]
+				counter++
+			}
+		}
+		
+		list.size--
+	}
 }
 
 // Returns the element at the specified position in this list.
@@ -116,6 +128,9 @@ func (list *ArrayList) Get(i int) CollectionItem {
 
 // Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
 func (list *ArrayList) SubList(fromIndex int, toIndex int) CollectionInterface {
+	if fromIndex < 0 || toIndex > list.size-1 || toIndex < fromIndex {
+		return nil
+	}
 	var newList = CreateArrayList(toIndex - fromIndex + 1)
 	for i := fromIndex; i < toIndex; i++ {
 		newList.Add(list.arr[i])

@@ -1,6 +1,7 @@
 package collections
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -24,12 +25,10 @@ func TestArrayList_AddOneItem(t *testing.T) {
 
 	if arrayList.Contains(item) != true {
 		t.Error("Expected to be: ", true, " got: ", arrayList.Contains(item))
-
 	}
 
 	if arrayList.size != 1 {
 		t.Error("Expected to be: ", 1, " got: ", arrayList.size)
-
 	}
 }
 
@@ -43,7 +42,6 @@ func TestArrayList_AddMultipleItem(t *testing.T) {
 	for _, item := range data {
 		if arrayList.Contains(item) != true {
 			t.Error("Expected to be: ", true, " got: ", arrayList.Contains(item))
-
 		}
 	}
 
@@ -143,20 +141,124 @@ func TestArrayList_IndexOf(t *testing.T) {
 	if index != pos {
 		t.Error("Expected to be: ", pos, " got: ", index)
 	}
+}
 
+func TestArrayList_IndexOfNoExists(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+	var val = T{Value: 100}
+	var pos = -1
+	var index = arrayList.IndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
+}
+
+func TestArrayList_LastIndexOf(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+	var val = T{Value: 10}
+	var pos = 3
+	var index = arrayList.LastIndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
+}
+
+func TestArrayList_LastIndexOfNoExists(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+	var val = T{Value: 100}
+	var pos = -1
+	var index = arrayList.LastIndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
+
+}
+
+func TestArrayList_SubListInvalidFromIndex(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	var fromIndex = -1
+	var toIndex = 2
+
+	var subLst = arrayList.SubList(fromIndex, toIndex)
+
+	if subLst != nil{
+		t.Error("Expected to be: ", nil, " got: ", subLst)
+	}
 }
 
 func TestArrayList_SubList(t *testing.T) {
 
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10},  {Value: 230}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	var fromIndex = 0
+	var toIndex = 3
 }
+
+
+
 
 func TestArrayList_ToArray(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
 	var arrayList = CreateArrayList(len(dataToInsert))
 	insertData(arrayList, dataToInsert)
-	var toArray = arrayList.ToArray()
+	var toArray []CollectionItem = arrayList.ToArray()
 
 	if len(toArray) != len(dataToInsert) {
 		t.Error("Expected to be: ", len(dataToInsert), " got: ", len(toArray))
+	}
+
+	if reflect.DeepEqual(arrayList.arr, toArray) != true{
+		t.Error("Expected to be: ", true, " got: ", false)
+	}
+}
+
+
+func TestArrayList_Max(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var maxValEmpty = arrayList.Max()
+
+	if nil != maxValEmpty {
+		t.Error("Expected: ", nil, " got: ", maxValEmpty)
+	}
+
+	var dataToInsert = []T{{Value: 10 }, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+	var max = arrayList.Max()
+	var maxValueData = T{Value: 55}
+
+	if max != maxValueData {
+		t.Error("Expected: ", maxValueData, " got: ", max)
+	}
+}
+
+func TestArrayList_Min(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var minValEmpty = arrayList.Min()
+
+	if nil != minValEmpty {
+		t.Error("Expected: ", nil, " got: ", minValEmpty)
+	}
+
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+	var min = arrayList.Min()
+	var minValueData = T{Value: 2}
+
+	if min != minValueData {
+		t.Error("Expected: ", minValueData, " got: ", min)
 	}
 }
