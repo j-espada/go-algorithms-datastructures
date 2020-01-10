@@ -13,21 +13,27 @@ I expect to implement the following:
 6. Quick sort
 7. Merge sort
 8. Shell sort
+9. Heap sort
 
 ## Data structures
-1- Linked list
-2- Double linked list
-3- ArrayList
-4- Stack
-5- Queue
-6- Disjoint set a.k.a union-find
-7- Diffrent representation of graph (adjacency matrix, adjacency list and CSR)
-8- Binary heap
-9- Leftist heap
-10- Binomial heap
+1. Linked list
+2. Double linked list
+3. ArrayList
+4. Stack
+5. Queue
+6. Disjoint set a.k.a union-find
+7. Diffrent representation of graph (adjacency matrix, adjacency list and CSR)
+8. Binary heap
+9. Leftist heap
+10. Binomial heap
+11. Rank pairing heap^*
+12. Fibonacci heap^*
+13. Link-cut trees^*
 
 ## Graph algorithms
-1- Kruskal
-2- Prim
-3- Dijkstra
-4- Optimum branching a.k.a edmonds algorithm
+1. Kruskal
+2. Prim
+3. Dijkstra
+4. Optimum branching a.k.a edmonds algorithm
+5. Bellman-ford
+6. Floyd-warshall
