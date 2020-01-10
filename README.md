@@ -5,14 +5,14 @@ I will also do the necessary unit tests to the code.
 I expect to implement the following:
 
 ## Sorting algorithms
-1- Bubble sort
-2- Insertion sort
-3- Bucket sort
-4- Counting sort
-5- Radix sort
-6- Quick sort
-7- Merge sort
-8- Shell sort
+1. Bubble sort
+2. Insertion sort
+3. Bucket sort
+4. Counting sort
+5. Radix sort
+6. Quick sort
+7. Merge sort
+8. Shell sort
 
 ## Data structures
 1- Linked list
