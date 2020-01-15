@@ -21,27 +21,26 @@ func TestCreateLinkedList(t *testing.T) {
 		t.Error("Expected: ", expectedSize, "got: ", linkedList.size)
 	}
 
-	if linkedList.head == nil {
-		t.Error("Expected: ", expectedSize, "got: ", linkedList.size)
+	if linkedList.head != nil {
+		t.Error("Expected: ", nil, "got: ", linkedList.head)
 	}
 
-	if linkedList.head.Value != nil {
-		t.Error("Expected: ", nil, "got: ", linkedList.head.Value)
+	if linkedList.tail != nil {
+		t.Error("Expected: ", nil, "got: ", linkedList.tail)
 	}
 }
 
 func TestLinkedList_Add(t *testing.T) {
 	var linkedList = CreateLinkedList()
-	var n = 100
+	var n = 5
 	var dataToInsert = generateData(n)
 	insertData(linkedList, dataToInsert)
-
 	if linkedList.size != n {
 		t.Error("Expected: ", n, "got: ", linkedList.size)
 	}
 
 	var k = 0
-	var currentNode = linkedList.head.next
+	var currentNode = linkedList.head
 	for currentNode != nil {
 		if !currentNode.Value.Equals(dataToInsert[k]) {
 			t.Error("Expected: ", dataToInsert[k], "got: ", currentNode.Value)
@@ -52,7 +51,6 @@ func TestLinkedList_Add(t *testing.T) {
 
 	if k != n {
 		t.Error("Expected: ", n, "got: ", k)
-
 	}
 }
 
@@ -135,6 +133,21 @@ func TestLinkedList_LastIndexOf(t *testing.T) {
 	}
 }
 
+func TestLinkedList_LastIndexOfNotExists(t *testing.T) {
+
+	var linkedList = CreateLinkedList()
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	insertData(linkedList, dataToInsert)
+
+	var pos = -1
+	var elm = T{Value: 1022}
+	var posLst = linkedList.LastIndexOf(elm)
+
+	if pos != posLst {
+		t.Error("Expected: ", pos, "got: ", posLst)
+	}
+}
+
 func TestLinkedList_Clear(t *testing.T) {
 	var linkedList = CreateLinkedList()
 	var n = 10
@@ -146,9 +159,19 @@ func TestLinkedList_Clear(t *testing.T) {
 	}
 
 	linkedList.Clear()
+
 	if 0 != linkedList.Size() {
 		t.Error("Expected: ", 0, " got: ", linkedList.size)
 
+	}
+
+	if linkedList.head != nil {
+		t.Error("Expected: ", nil, " got: ", linkedList.head)
+
+	}
+
+	if linkedList.tail != nil {
+		t.Error("Expected: ", nil, " got: ", linkedList.tail)
 	}
 }
 
@@ -170,6 +193,7 @@ func TestLinkedList_RemoveFirstElm(t *testing.T) {
 
 	var linkedList = CreateLinkedList()
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
+	var newHead = linkedList.GetLinkedListNode(1)
 	insertData(linkedList, dataToInsert)
 
 	var toBeRemoved = T{Value: 10}
@@ -182,7 +206,10 @@ func TestLinkedList_RemoveFirstElm(t *testing.T) {
 
 	if linkedList.size != len(dataToInsert)-1 {
 		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
+	}
 
+	if newHead != linkedList.head {
+		t.Error("Expected: ", newHead, " got: ", linkedList.head)
 	}
 }
 
@@ -191,6 +218,7 @@ func TestLinkedList_RemoveLastElm(t *testing.T) {
 	var linkedList = CreateLinkedList()
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 110}}
 	insertData(linkedList, dataToInsert)
+	var newTail = linkedList.GetLinkedListNode(2)
 
 	var toBeRemoved = T{Value: 110}
 	linkedList.Remove(toBeRemoved)
@@ -202,7 +230,10 @@ func TestLinkedList_RemoveLastElm(t *testing.T) {
 
 	if linkedList.size != len(dataToInsert)-1 {
 		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
+	}
 
+	if newTail != linkedList.tail {
+		t.Error("Expected: ", newTail, " got: ", linkedList.tail)
 	}
 }
 
@@ -222,7 +253,6 @@ func TestLinkedList_RemoveMiddleElm(t *testing.T) {
 
 	if linkedList.size != len(dataToInsert)-1 {
 		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
-
 	}
 }
 
@@ -242,7 +272,6 @@ func TestLinkedList_RemoveNotExistingElm(t *testing.T) {
 
 	if linkedList.size != len(dataToInsert) {
 		t.Error("Expected: ", len(dataToInsert)-1, " got: ", linkedList.size)
-
 	}
 }
 
@@ -288,15 +317,27 @@ func TestLinkedList_SubList(t *testing.T) {
 		t.Error("Expected: ", nil, " got: ", sbl)
 	}
 
+	sbl = linkedList.SubList(0, 7)
+
+	if nil != sbl {
+		t.Error("Expected: ", nil, " got: ", sbl, linkedList.size)
+	}
+
+	sbl = linkedList.SubList(6, 5)
+
+	if nil != sbl {
+		t.Error("Expected: ", nil, " got: ", sbl)
+	}
+
 	var fromIndex = 0
 	var toIndex = 3
-	var sublistDATA = []T{{Value: 1}, {Value: 2}, {Value: 3}}
+	var subListData = []T{{Value: 1}, {Value: 2}, {Value: 3}}
 	var expectedSbl = CreateLinkedList()
-	insertData(expectedSbl, sublistDATA)
+	insertData(expectedSbl, subListData)
 	sbl = linkedList.SubList(fromIndex, toIndex)
 	var eq = reflect.DeepEqual(sbl, expectedSbl)
 	if true != eq {
-		t.Error("Expected: ", true, " got: ", eq)
+		t.Error("Expected: ", true, " got: ", eq, sbl, expectedSbl)
 
 	}
 }

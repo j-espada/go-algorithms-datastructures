@@ -6,15 +6,15 @@ import (
 
 type Node struct {
 	Value CollectionItem
-	next *Node
+	next  *Node
 }
 
-func createNode(item CollectionItem) *Node{
+func createNode(item CollectionItem) *Node {
 
-  return &Node{
-	  item,
-	  nil,
-  }
+	return &Node{
+		item,
+		nil,
+	}
 }
 
 func (node *Node) String() string {
@@ -24,31 +24,31 @@ func (node *Node) String() string {
 
 type LinkedList struct {
 	head *Node
+	tail *Node
 	size int
 }
+
 // Create a linked list
-func CreateLinkedList() *LinkedList  {
+func CreateLinkedList() *LinkedList {
 
 	return &LinkedList{
-		createNode(nil),
+		nil,
+		nil,
 		0,
 	}
 }
 
 // Appends the specified element to the end of this list
 func (list *LinkedList) Add(item CollectionItem) {
-
-	var head = list.head
-	var newNode = createNode(item)
-	if list.size == 0 {
-		head.next = createNode(item)
+	var newTail = createNode(item)
+	if list.head == nil {
+		list.head = newTail
+		list.tail = newTail
 		list.size++
 	} else {
-		var cNode = head
-		for cNode.next != nil  {
-			cNode = cNode.next
-		}
-		cNode.next = newNode
+		var tail = list.tail
+		tail.next = newTail
+		list.tail = newTail
 		list.size++
 	}
 }
@@ -57,7 +57,7 @@ func (list *LinkedList) Add(item CollectionItem) {
 func (list *LinkedList) AddAll(collectionInterface CollectionInterface) {
 
 	var size = collectionInterface.Size()
-	for i:= 0; i < size; i++  {
+	for i := 0; i < size; i++ {
 		list.Add(collectionInterface.Get(i))
 	}
 }
@@ -66,12 +66,12 @@ func (list *LinkedList) AddAll(collectionInterface CollectionInterface) {
 func (list *LinkedList) IndexOf(item CollectionItem) int {
 
 	var i = 0
-	var currentNode = list.head.next
+	var currentNode = list.head
 	var elm CollectionItem = nil
 
 	for currentNode != nil {
 
-		if item.Equals(currentNode.Value){
+		if item.Equals(currentNode.Value) {
 			elm = item
 			break
 		}
@@ -91,12 +91,12 @@ func (list *LinkedList) IndexOf(item CollectionItem) int {
 func (list *LinkedList) LastIndexOf(item CollectionItem) int {
 
 	var i, j = 0, 0
-	var currentNode = list.head.next
+	var currentNode = list.head
 	var elm CollectionItem = nil
 
 	for currentNode != nil {
 
-		if item.Equals(currentNode.Value){
+		if item.Equals(currentNode.Value) {
 			elm = item
 			j = i
 		}
@@ -115,16 +115,17 @@ func (list *LinkedList) LastIndexOf(item CollectionItem) int {
 //Removes all of the elements from this list
 func (list *LinkedList) Clear() {
 
-	list.head.next = nil
+	list.head = nil
+	list.tail = nil
 	list.size = 0
 }
 
 //Returns true if this list contains the specified element.
 func (list *LinkedList) Contains(item CollectionItem) bool {
 
-	var currentNode = list.head.next
+	var currentNode = list.head
 	for currentNode != nil {
-		if item.Equals(currentNode.Value){
+		if item.Equals(currentNode.Value) {
 			return true
 		}
 		currentNode = currentNode.next
@@ -133,7 +134,7 @@ func (list *LinkedList) Contains(item CollectionItem) bool {
 }
 
 // Returns the number of elements in this list.
-func (list *LinkedList) Size() int{
+func (list *LinkedList) Size() int {
 
 	return list.size
 }
@@ -141,21 +142,19 @@ func (list *LinkedList) Size() int{
 // Removes the first occurrence of the specified element from this list, if it is present
 func (list *LinkedList) Remove(item CollectionItem) {
 
-	var current = list.head.next
+	var current = list.head
 	var previous *Node = nil
 	var next *Node = nil
 	var found = false
-	for current != nil  {
-
+	for current != nil {
 		if item.Equals(current.Value) {
 			found = true
 			break
 		}
-
 		previous = current
 		current = current.next
 		// in case that we have reached the end of the list without finding the item to remove
-		if current != nil{
+		if current != nil {
 			next = current.next
 		} else {
 			next = nil
@@ -166,12 +165,15 @@ func (list *LinkedList) Remove(item CollectionItem) {
 		return
 	}
 
-	if current != nil && previous != nil && next != nil {
+	if (current != nil && current != list.head) && previous != nil && next != nil {
 		previous.next = next
-	} else if  current != nil && previous != nil && next == nil {
+	} else if (current != nil && current != list.tail) && previous != nil && next == nil {
 		previous.next = nil
-	} else if current == list.head.next {
-		list.head.next = next
+	} else if previous == nil && current == list.head && next == nil {
+		list.head = next
+	} else if current == list.tail && previous != nil && next == nil {
+		list.tail = previous
+		list.tail.next = nil
 	}
 	list.size--
 }
@@ -183,11 +185,11 @@ func (list *LinkedList) Get(i int) CollectionItem {
 		return nil
 	}
 
-	var currentNode = list.head.next
+	var currentNode = list.head
 	var k = 0
 	var item CollectionItem = nil
 	for currentNode != nil {
-		if i == k  {
+		if i == k {
 			item = currentNode.Value
 			break
 		}
@@ -198,10 +200,32 @@ func (list *LinkedList) Get(i int) CollectionItem {
 	return item
 }
 
+// Returns the element at the specified position in this list.
+func (list *LinkedList) GetLinkedListNode(i int) *Node {
+
+	if i > list.size || i < 0 {
+		return nil
+	}
+
+	var currentNode = list.head
+	var k = 0
+	var node *Node = nil
+	for currentNode != nil {
+		if i == k {
+			node = currentNode
+			break
+		}
+		currentNode = currentNode.next
+		k++
+	}
+
+	return node
+}
+
 // Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
 func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface {
 
-	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size{
+	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size {
 		return nil
 	}
 
@@ -211,9 +235,9 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 
 	var subList = CreateLinkedList()
 	var i = 0
-	var currentNode = list.head.next
+	var currentNode = list.head
 
-	for currentNode != nil  {
+	for currentNode != nil {
 
 		if i >= fromIndex && i < toIndex {
 			subList.Add(currentNode.Value)
@@ -232,7 +256,7 @@ func (list *LinkedList) ToArray() []CollectionItem {
 
 	var arr = make([]CollectionItem, list.size)
 	var k = 0
-	var currentNode = list.head.next
+	var currentNode = list.head
 	for currentNode.next != nil {
 		arr[k] = currentNode.Value
 		currentNode = currentNode.next
@@ -246,12 +270,12 @@ func (list *LinkedList) Max() CollectionItem {
 
 	if list.size == 0 {
 		return nil
-	}else {
+	} else {
 
-		var currentNode = list.head.next
+		var currentNode = list.head
 		var max CollectionItem = nil
 
-		for currentNode.next != nil  {
+		for currentNode.next != nil {
 
 			if max == nil || max.Compare(currentNode.Value) > 0 {
 				max = currentNode.Value
@@ -266,19 +290,18 @@ func (list *LinkedList) Max() CollectionItem {
 // Returns the minimum element in the list or nil if list is empty
 func (list *LinkedList) Min() CollectionItem {
 
-	if list.size == 0 {
+	if list.head == nil {
 		return nil
-	}else {
-		var currentNode = list.head.next
+	} else {
+		var currentNode = list.head
 		var min CollectionItem = nil
 
-		for currentNode.next != nil  {
+		for currentNode.next != nil {
 
 			if min == nil || min.Compare(currentNode.Value) < 0 {
 				min = currentNode.Value
 			}
 			currentNode = currentNode.next
-
 		}
 
 		return min
@@ -287,9 +310,10 @@ func (list *LinkedList) Min() CollectionItem {
 
 func (list *LinkedList) String() string {
 
-	var str = ""
-	var cNode = list.head.next
-	for cNode != nil  {
+	var cNode = list.head
+	var str = "HEAD -> " + cNode.String() + " TAIL: " + list.tail.String() + "\n"
+
+	for cNode != nil {
 		str += cNode.String() + "\n"
 		cNode = cNode.next
 	}
