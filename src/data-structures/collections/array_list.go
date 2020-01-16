@@ -102,7 +102,17 @@ func (list *ArrayList) Capacity() int {
 
 // Removes the first occurrence of the specified element from this list, if it is present
 func (list *ArrayList) Remove(item CollectionItem) {
-
+	var position = list.IndexOf(item)
+	var newArr = make([]CollectionItem, list.capacity-1)
+	var k = 0
+	for i := 0; i < list.size; i++ {
+		if i != position {
+			newArr[k] = list.arr[i]
+			k++
+		}
+	}
+	list.arr = newArr
+	list.size--
 }
 
 // Returns the element at the specified position in this list.
