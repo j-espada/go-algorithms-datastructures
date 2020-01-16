@@ -136,6 +136,7 @@ func TestArrayList_IndexOf(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
 	var arrayList = CreateArrayList(len(dataToInsert))
 	insertData(arrayList, dataToInsert)
+
 	var val = T{Value: 10}
 	var pos = 0
 	var index = arrayList.IndexOf(val)
@@ -143,7 +144,48 @@ func TestArrayList_IndexOf(t *testing.T) {
 	if index != pos {
 		t.Error("Expected to be: ", pos, " got: ", index)
 	}
+}
 
+func TestArrayList_LastIndexOf(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	var val = T{Value: 10}
+	var pos = 3
+	var index = arrayList.LastIndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
+}
+
+func TestArrayList_LastIndexOfNotExists(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	var val = T{Value: 102}
+	var pos = -1
+	var index = arrayList.LastIndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
+}
+
+func TestArrayList_IndexOfNoElm(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	var val = T{Value: 110}
+	var pos = -1
+	var index = arrayList.IndexOf(val)
+
+	if index != pos {
+		t.Error("Expected to be: ", pos, " got: ", index)
+	}
 }
 
 func TestArrayList_SubList(t *testing.T) {
@@ -158,5 +200,41 @@ func TestArrayList_ToArray(t *testing.T) {
 
 	if len(toArray) != len(dataToInsert) {
 		t.Error("Expected to be: ", len(dataToInsert), " got: ", len(toArray))
+	}
+}
+
+func TestArrayList_Max(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var maxValEmpty = arrayList.Max()
+
+	if nil != maxValEmpty {
+		t.Error("Expected: ", nil, " got: ", maxValEmpty)
+	}
+
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+	var max = arrayList.Max()
+	var maxValueData = T{Value: 55}
+
+	if max != maxValueData {
+		t.Error("Expected: ", maxValueData, " got: ", max)
+	}
+}
+
+func TestArrayList_Min(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var minValEmpty = arrayList.Min()
+
+	if nil != minValEmpty {
+		t.Error("Expected: ", nil, " got: ", minValEmpty)
+	}
+
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+	var min = arrayList.Min()
+	var minValueData = T{Value: 2}
+
+	if min != minValueData {
+		t.Error("Expected: ", minValueData, " got: ", min)
 	}
 }
