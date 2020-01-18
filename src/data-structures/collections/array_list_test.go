@@ -24,12 +24,10 @@ func TestArrayList_AddOneItem(t *testing.T) {
 
 	if arrayList.Contains(item) != true {
 		t.Error("Expected to be: ", true, " got: ", arrayList.Contains(item))
-
 	}
 
 	if arrayList.size != 1 {
 		t.Error("Expected to be: ", 1, " got: ", arrayList.size)
-
 	}
 }
 
@@ -188,8 +186,34 @@ func TestArrayList_IndexOfNoElm(t *testing.T) {
 	}
 }
 
-func TestArrayList_SubList(t *testing.T) {
+func TestArrayList_SubListInvalidIndex(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
 
+	fromIndex := 5
+	toIndex := 0
+
+	var subArr = arrayList.SubList(fromIndex, toIndex)
+
+	if subArr != nil {
+		t.Error("Expected: ", nil, " got: ", subArr)
+	}
+}
+
+func TestArrayList_SubListLargerThanSize(t *testing.T) {
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
+	var arrayList = CreateArrayList(len(dataToInsert))
+	insertData(arrayList, dataToInsert)
+
+	fromIndex := 0
+	toIndex := 10
+
+	var subArr = arrayList.SubList(fromIndex, toIndex)
+
+	if subArr != nil {
+		t.Error("Expected: ", nil, " got: ", subArr)
+	}
 }
 
 func TestArrayList_ToArray(t *testing.T) {
@@ -236,5 +260,67 @@ func TestArrayList_Min(t *testing.T) {
 
 	if min != minValueData {
 		t.Error("Expected: ", minValueData, " got: ", min)
+	}
+}
+
+func TestArrayList_RemoveFirstElm(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+
+	var deletePos = 0
+	var item = dataToInsert[deletePos]
+	arrayList.Remove(item)
+	var contains bool = arrayList.Contains(item)
+
+	if contains != false {
+		t.Error("Expected: ", false, " got: ", contains)
+	}
+
+	var dataToInsertRemoved = []T{{Value: 2}, {Value: 55}, {Value: 55}}
+	removeUtil(dataToInsertRemoved, arrayList.arr, 3, t)
+}
+
+func TestArrayList_RemoveLastElm(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 155}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+
+	var deletePos = 3
+	var item = dataToInsert[deletePos]
+	arrayList.Remove(item)
+	var contains bool = arrayList.Contains(item)
+
+	if contains != false {
+		t.Error("Expected: ", false, " got: ", contains)
+	}
+
+	var dataToInsertRemoved = []T{{Value: 10}, {Value: 2}, {Value: 155}}
+	removeUtil(dataToInsertRemoved, arrayList.arr, 3, t)
+}
+
+func TestArrayList_RemoveMiddleElm(t *testing.T) {
+	var arrayList = CreateArrayList(4)
+	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
+	insertData(arrayList, dataToInsert)
+
+	var deletePos = 1
+	var item = dataToInsert[deletePos]
+	arrayList.Remove(item)
+	var contains bool = arrayList.Contains(item)
+
+	if contains != false {
+		t.Error("Expected: ", false, " got: ", contains)
+	}
+
+	var dataToInsertRemoved = []T{{Value: 10}, {Value: 55}, {Value: 55}}
+	removeUtil(dataToInsertRemoved, arrayList.arr, 3, t)
+}
+
+func removeUtil(expectedArr []T, newArr []CollectionItem, n int, t *testing.T) {
+	for i := 0; i < n; i++ {
+		if expectedArr[i].Equals(newArr[i]) != true {
+			t.Error("Expected: ", expectedArr[i], " got: ", newArr[i])
+		}
 	}
 }
