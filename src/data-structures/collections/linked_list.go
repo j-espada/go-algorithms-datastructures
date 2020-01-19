@@ -225,11 +225,7 @@ func (list *LinkedList) GetLinkedListNode(i int) *Node {
 // Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
 func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface {
 
-	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size {
-		return nil
-	}
-
-	if toIndex < fromIndex || toIndex > list.size {
+	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size || toIndex < fromIndex || toIndex > list.size {
 		return nil
 	}
 

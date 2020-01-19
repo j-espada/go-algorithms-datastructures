@@ -186,36 +186,6 @@ func TestArrayList_IndexOfNoElm(t *testing.T) {
 	}
 }
 
-func TestArrayList_SubListInvalidIndex(t *testing.T) {
-	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
-	var arrayList = CreateArrayList(len(dataToInsert))
-	insertData(arrayList, dataToInsert)
-
-	fromIndex := 5
-	toIndex := 0
-
-	var subArr = arrayList.SubList(fromIndex, toIndex)
-
-	if subArr != nil {
-		t.Error("Expected: ", nil, " got: ", subArr)
-	}
-}
-
-func TestArrayList_SubListLargerThanSize(t *testing.T) {
-	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
-	var arrayList = CreateArrayList(len(dataToInsert))
-	insertData(arrayList, dataToInsert)
-
-	fromIndex := 0
-	toIndex := 10
-
-	var subArr = arrayList.SubList(fromIndex, toIndex)
-
-	if subArr != nil {
-		t.Error("Expected: ", nil, " got: ", subArr)
-	}
-}
-
 func TestArrayList_ToArray(t *testing.T) {
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 10}}
 	var arrayList = CreateArrayList(len(dataToInsert))
@@ -322,5 +292,42 @@ func removeUtil(expectedArr []T, newArr []CollectionItem, n int, t *testing.T) {
 		if expectedArr[i].Equals(newArr[i]) != true {
 			t.Error("Expected: ", expectedArr[i], " got: ", newArr[i])
 		}
+	}
+}
+
+func TestArrayList_SubList(t *testing.T) {
+	var arrayList *ArrayList = CreateArrayList(6)
+
+	var dataToInsert = []T{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}, {Value: 6}}
+	insertData(arrayList, dataToInsert)
+
+	var sbl = arrayList.SubList(-1, 3)
+
+	if nil != sbl {
+		t.Error("Expected: ", nil, " got: ", sbl)
+	}
+
+	sbl = arrayList.SubList(0, -3)
+
+	if nil != sbl {
+		t.Error("Expected: ", nil, " got: ", sbl)
+	}
+
+	sbl = arrayList.SubList(6, 5)
+
+	if nil != sbl {
+		t.Error("Expected: ", nil, " got: ", sbl)
+	}
+
+	var fromIndex = 0
+	var toIndex = 3
+	var subListData = []T{{Value: 1}, {Value: 2}, {Value: 3}}
+	var expectedSbl = CreateArrayList(4)
+	insertData(expectedSbl, subListData)
+
+	arrListSbl := arrayList.SubList(fromIndex, toIndex)
+
+	if arrListSbl.Size() != len(subListData) {
+		t.Error("Expected: ", len(subListData), " got: ", arrListSbl.Size())
 	}
 }

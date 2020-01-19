@@ -127,14 +127,14 @@ func (list *ArrayList) Get(i int) CollectionItem {
 
 // Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
 func (list *ArrayList) SubList(fromIndex int, toIndex int) CollectionInterface {
-	if toIndex-fromIndex > 0 && toIndex < list.size {
-		var newList = CreateArrayList(toIndex - fromIndex + 1)
-		for i := fromIndex; i < toIndex; i++ {
-			newList.Add(list.arr[i])
-		}
-		return newList
+	if fromIndex < 0 || fromIndex > toIndex || fromIndex > list.size || toIndex < fromIndex || toIndex > list.size {
+		return nil
 	}
-	return nil
+	var newList = CreateArrayList(toIndex - fromIndex + 1)
+	for i := fromIndex; i < toIndex; i++ {
+		newList.Add(list.arr[i])
+	}
+	return newList
 }
 
 // Returns an array containing all of the elements in this list in proper sequence (from first to last element)
@@ -168,4 +168,15 @@ func (list *ArrayList) Min() CollectionItem {
 		}
 	}
 	return result
+}
+
+func (list *ArrayList) String() string {
+	var str = ""
+	str += "Capacity: " + string(list.capacity) + "\n"
+	str += "Size: " + string(list.size) + "\n"
+	for i := 0; i < list.size; i++ {
+		var item = list.arr[i]
+		str += item.String() + " "
+	}
+	return str
 }
