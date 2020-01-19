@@ -20,7 +20,7 @@ I expect to implement the following:
 2. Double linked list
 3. ArrayList - Implemented
 4. Stack - Implemented
-5. Queue - Implemented
+5. Queue
 6. Disjoint set a.k.a union-find
 7. Diffrent representation of graph (adjacency matrix, adjacency list and CSR)
 8. Binary heap
