@@ -5,10 +5,10 @@ I will also do the necessary unit tests to the code.
 I expect to implement the following:
 
 ## Sorting algorithms
-1. Bubble sort
-2. Insertion sort
-3. Bucket sort
-4. Counting sort
+1. Bubble sort - Implemented
+2. Insertion sort - Implemented
+3. Bucket sort - Implemented
+4. Counting sort - Implemented
 5. Radix sort
 6. Quick sort
 7. Merge sort
@@ -16,11 +16,11 @@ I expect to implement the following:
 9. Heap sort
 
 ## Data structures
-1. Linked list
+1. Linked list - Implemented
 2. Double linked list
-3. ArrayList
-4. Stack
-5. Queue
+3. ArrayList - Implemented
+4. Stack - Implemented
+5. Queue - Implemented
 6. Disjoint set a.k.a union-find
 7. Diffrent representation of graph (adjacency matrix, adjacency list and CSR)
 8. Binary heap
