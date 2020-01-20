@@ -1,42 +1,23 @@
-package stack
+package queues
 
 import (
-	"fmt"
 	"math/rand"
 	"testing"
 )
 
 const MaxValue = 20
 
-type NodeInterfaceImpl struct {
-	Value int
-}
-func (a NodeInterfaceImpl) String() string {
-	return fmt.Sprintln(a.Value)
-}
-
-func generateData(n int) [] *Node {
-	var data = make([] *Node, n)
-	for i := 0; i < n  ; i++  {
-		data[i] = &Node{Value:&NodeInterfaceImpl{Value:rand.Int() % MaxValue} }
+func generateData(n int) []int {
+	var data = make([]int, n)
+	for i := 0; i < n; i++ {
+		data[i] = rand.Int() % MaxValue
 	}
 	return data
 }
 
-func populateStack(stack *Stack, data [] *Node) {
-	for i:= 0; i < len(data); i++  {
+func populateStack(stack *Stack, data []int) {
+	for i := 0; i < len(data); i++ {
 		stack.Push(data[i])
-	}
-}
-
-func TestNode_String(t *testing.T) {
-	var value = 10
-	var stringOfValue = fmt.Sprintln(value)
-	var node = Node{Value: &NodeInterfaceImpl{Value: value}}
-	var nodeStr = node.String()
-	if stringOfValue != node.String() {
-		t.Error("Expected: ", stringOfValue, "got: ", nodeStr)
-
 	}
 }
 
@@ -45,7 +26,7 @@ func TestStack_CreateStackWithDefinedCapacity(t *testing.T) {
 	stack := CreateStack(stackCapacity)
 
 	if stack.capacity != stackCapacity {
-		t.Error("Expected: ", stackCapacity, "got: ",stack.capacity)
+		t.Error("Expected: ", stackCapacity, "got: ", stack.capacity)
 	}
 
 	if stack.top != 0 {
@@ -58,7 +39,7 @@ func TestStack_CreateStackWithDefinedCapacity(t *testing.T) {
 }
 
 func TestStack_CreateStackWithDefaultCapacity(t *testing.T) {
-	stack := CreateStackDefaultCapacity()
+	var stack = CreateStackDefaultCapacity()
 
 	if stack.capacity != DefaultSize {
 		t.Error("Expected: ", DefaultSize, "got: ", stack.capacity)
@@ -78,13 +59,10 @@ func TestStack_Push(t *testing.T) {
 	var data = generateData(n)
 	var stack = CreateStack(n)
 	populateStack(stack, data)
-	for i:= 0; i < n ;i ++  {
+
+	for i := 0; i < n; i++ {
 		if stack.stack[i] != data[i] {
 			t.Error("Expected: ", data[i], "got: ", stack.stack[i])
-		}
-
-		if stack.top != i {
-
 		}
 	}
 
@@ -98,7 +76,27 @@ func TestStack_IsEmpty(t *testing.T) {
 	var stack = CreateStack(n)
 
 	if stack.IsEmpty() != true {
-		t.Error("Expected: ", true , "got: ", false)
+		t.Error("Expected: ", true, "got: ", false)
+	}
+}
+
+func TestStack_IsEmptyMultiplePop(t *testing.T) {
+	var n = 10
+	var data = generateData(n)
+	var stack = CreateStack(n + 1)
+	populateStack(stack, data)
+
+	for i := n; i >= 2; i-- {
+		stack.Pop()
+		if false != stack.IsEmpty() {
+			t.Error("Expected: ", false, " got: ", stack.IsEmpty())
+		}
+	}
+
+	stack.Pop()
+
+	if true != stack.IsEmpty() {
+		t.Error("Expected: ", true, " got: ", stack.IsEmpty())
 	}
 
 }
@@ -106,7 +104,7 @@ func TestStack_IsEmpty(t *testing.T) {
 func TestStack_Pop(t *testing.T) {
 	var n = 10
 	var data = generateData(n)
-	var stack = CreateStack(n+1)
+	var stack = CreateStack(n + 1)
 	populateStack(stack, data)
 
 	for stack.IsEmpty() == false {
@@ -114,8 +112,34 @@ func TestStack_Pop(t *testing.T) {
 	}
 
 	if stack.IsEmpty() != true {
-		t.Error("Expected: ", true , "got: ", false)
+		t.Error("Expected: ", true, "got: ", false)
+	}
+}
 
+func TestStack_Top(t *testing.T) {
+	var n = 10
+	var data = generateData(n)
+	var stack = CreateStack(n + 1)
+	populateStack(stack, data)
+
+	if stack.IsEmpty() != false {
+		t.Error("Expected: ", false, " got: ", stack.IsEmpty())
+	}
+
+	if stack.Top() != data[n-1] {
+		t.Error("Expected: ", data[n-1], " got: ", stack.Top())
+	}
+}
+
+func TestStack_TopEmptyStack(t *testing.T) {
+	var stack = CreateStackDefaultCapacity()
+
+	if stack.IsEmpty() != true {
+		t.Error("Expected: ", true, " got: ", stack.IsEmpty())
+	}
+
+	if stack.Top() != nil {
+		t.Error("Expected: ", nil, " got: ", stack.Top())
 	}
 }
 
@@ -124,18 +148,17 @@ func TestStack_EmptyStackGotNil(t *testing.T) {
 	var stack = CreateStack(n)
 	var pop = stack.Pop()
 	if pop != nil {
-		t.Error("Expected: ", nil , "got: ", pop)
+		t.Error("Expected: ", nil, "got: ", pop)
 	}
 }
 
 func TestStack_DuplicateSize(t *testing.T) {
-
 	var n = 10
 	var stack = CreateStack(n)
 	var stackCap = stack.capacity
 	stack.duplicateSizeAndCopy()
 
 	if stack.capacity != stackCap*2 {
-		t.Error("Expected: ", stack.capacity , "got: ", stackCap*2)
+		t.Error("Expected: ", stack.capacity, "got: ", stackCap*2)
 	}
 }
