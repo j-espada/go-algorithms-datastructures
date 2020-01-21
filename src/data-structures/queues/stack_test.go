@@ -1,25 +1,8 @@
 package queues
 
 import (
-	"math/rand"
 	"testing"
 )
-
-const MaxValue = 20
-
-func generateData(n int) []int {
-	var data = make([]int, n)
-	for i := 0; i < n; i++ {
-		data[i] = rand.Int() % MaxValue
-	}
-	return data
-}
-
-func populateStack(stack *Stack, data []int) {
-	for i := 0; i < len(data); i++ {
-		stack.Push(data[i])
-	}
-}
 
 func TestStack_CreateStackWithDefinedCapacity(t *testing.T) {
 	stackCapacity := 10
@@ -56,9 +39,9 @@ func TestStack_CreateStackWithDefaultCapacity(t *testing.T) {
 
 func TestStack_Push(t *testing.T) {
 	var n = 10
-	var data = generateData(n)
+	var data = GenerateData(n)
 	var stack = CreateStack(n)
-	populateStack(stack, data)
+	PopulateStack(stack, data)
 
 	for i := 0; i < n; i++ {
 		if stack.stack[i] != data[i] {
@@ -82,9 +65,9 @@ func TestStack_IsEmpty(t *testing.T) {
 
 func TestStack_IsEmptyMultiplePop(t *testing.T) {
 	var n = 10
-	var data = generateData(n)
+	var data = GenerateData(n)
 	var stack = CreateStack(n + 1)
-	populateStack(stack, data)
+	PopulateStack(stack, data)
 
 	for i := n; i >= 2; i-- {
 		stack.Pop()
@@ -103,9 +86,9 @@ func TestStack_IsEmptyMultiplePop(t *testing.T) {
 
 func TestStack_Pop(t *testing.T) {
 	var n = 10
-	var data = generateData(n)
+	var data = GenerateData(n)
 	var stack = CreateStack(n + 1)
-	populateStack(stack, data)
+	PopulateStack(stack, data)
 
 	for stack.IsEmpty() == false {
 		stack.Pop()
@@ -118,9 +101,9 @@ func TestStack_Pop(t *testing.T) {
 
 func TestStack_Top(t *testing.T) {
 	var n = 10
-	var data = generateData(n)
+	var data = GenerateData(n)
 	var stack = CreateStack(n + 1)
-	populateStack(stack, data)
+	PopulateStack(stack, data)
 
 	if stack.IsEmpty() != false {
 		t.Error("Expected: ", false, " got: ", stack.IsEmpty())

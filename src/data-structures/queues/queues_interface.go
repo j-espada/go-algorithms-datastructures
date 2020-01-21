@@ -1,5 +1,7 @@
 package queues
 
+const DefaultSize = 10
+
 type QueueInterface interface {
 	// Check if queue is empty
 	IsEmpty() bool
@@ -7,6 +9,6 @@ type QueueInterface interface {
 	Push(node interface{})
 	// Pop node from queue
 	Pop() (node interface{})
-	// Pop node from queue
+	// Peek node from queue
 	Top() (node interface{})
 }

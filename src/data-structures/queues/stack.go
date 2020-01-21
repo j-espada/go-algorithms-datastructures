@@ -2,8 +2,6 @@ package queues
 
 import "fmt"
 
-const DefaultSize = 10
-
 type Stack struct {
 	capacity int
 	top      int
