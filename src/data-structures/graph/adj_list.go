@@ -17,17 +17,17 @@ func CreateAdjList(n int) *AdjList {
 		arr: make([]collections.CollectionInterface, n),
 	}
 	for i := 0; i < n; i++ {
-		res.arr[i] = collections.CreateArrayListDefaultCapacity()
+		res.arr[i] = collections.CreateLinkedList()
 	}
 	return res
 }
 
-func (adjList *AdjList) AddLink(edge *Edge) {
+func (adjList *AdjList) AddLink(edge Edge) {
 	adjList.arr[edge.u].Add(edge)
 	adjList.e++
 }
 
-func (adjList *AdjList) RemoveLink(edge *Edge) {
+func (adjList *AdjList) RemoveLink(edge Edge) {
 	adjList.arr[edge.u].Remove(edge)
 }
 

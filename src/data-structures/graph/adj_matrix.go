@@ -18,14 +18,14 @@ func CreateAdjMatrix(n int) *AdjMatrix {
 	return matrix
 }
 
-func (matrix *AdjMatrix) AddLink(edge *Edge) {
+func (matrix *AdjMatrix) AddLink(edge Edge) {
 	u := edge.u
 	v := edge.v
 	_ = checkEdgeBounds(u, v, matrix.n)
 	matrix.matrix[u][v] = edge.w
 }
 
-func (matrix *AdjMatrix) RemoveLink(edge *Edge) {
+func (matrix *AdjMatrix) RemoveLink(edge Edge) {
 	u := edge.u
 	v := edge.v
 	_ = checkEdgeBounds(u, v, matrix.n)

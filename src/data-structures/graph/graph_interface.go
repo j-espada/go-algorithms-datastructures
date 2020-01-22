@@ -34,11 +34,11 @@ func (edge Edge) Compare(other collections.CollectionItem) int {
 }
 
 func (edge Edge) String() string {
-	return fmt.Sprint("(u: ", edge.u, " v: ", edge.v, " w: ", edge.w, ")\n")
+	return fmt.Sprint("(u: ", edge.u, " v: ", edge.v, " w: ", edge.w, ")")
 }
 
 type InterfaceGraph interface {
-	AddLink(edge *Edge)
-	RemoveLink(edge *Edge)
+	AddLink(edge Edge)
+	RemoveLink(edge Edge)
 	Neighbors(v int) collections.CollectionInterface
 }

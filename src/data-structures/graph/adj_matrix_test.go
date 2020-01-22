@@ -35,7 +35,7 @@ func TestAdjMatrix_AddLink(t *testing.T) {
 	edges := CreateEdges(n, 10)
 
 	for _, e := range edges {
-		adjMatrix.AddLink(&e)
+		adjMatrix.AddLink(e)
 	}
 
 	for _, e := range edges {
@@ -54,7 +54,7 @@ func TestAdjMatrix_DeleteLink(t *testing.T) {
 	edges := CreateEdges(n, 10)
 
 	for _, e := range edges {
-		adjMatrix.AddLink(&e)
+		adjMatrix.AddLink(e)
 	}
 
 	for _, e := range edges {
@@ -69,7 +69,7 @@ func TestAdjMatrix_DeleteLink(t *testing.T) {
 	for _, e := range edges {
 		u := e.u
 		v := e.v
-		adjMatrix.RemoveLink(&e)
+		adjMatrix.RemoveLink(e)
 		if adjMatrix.matrix[u][v] != nil {
 			t.Error("Expected: ", nil, " got: ", adjMatrix.matrix[u][v])
 		}

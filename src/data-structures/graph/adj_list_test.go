@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -30,12 +29,11 @@ func TestCreateAdjList(t *testing.T) {
 }
 
 func TestAdjList_AddLink(t *testing.T) {
-	n := 3
+	n := 10
 	adjList := CreateAdjList(n)
 	edges := CreateEdges(n, 12)
-	fmt.Println(edges)
 	for _, e := range edges {
-		adjList.AddLink(&e)
+		adjList.AddLink(e)
 	}
 
 	if adjList.e != len(edges) {
@@ -44,13 +42,11 @@ func TestAdjList_AddLink(t *testing.T) {
 
 	for _, e := range edges {
 		u := e.u
-		contain := adjList.arr[u].Contains(e)
+		v := e
+		contain := adjList.arr[u].Contains(v)
 		if true != contain {
-			t.Error("Expected: ", true, " got: ", contain, "EDGE: ", e)
-			fmt.Println(edges)
-			fmt.Println(adjList.arr[u])
+			t.Error("Expected: ", true, " got: ", contain, "EDGE: ", e, adjList.arr[u])
 		}
-
 	}
 
 }
