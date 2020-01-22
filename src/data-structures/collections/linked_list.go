@@ -307,7 +307,7 @@ func (list *LinkedList) Min() CollectionItem {
 func (list *LinkedList) String() string {
 
 	var cNode = list.head
-	var str = "HEAD -> " + cNode.String() + " TAIL: " + list.tail.String() + "\n"
+	var str = "HEAD -> " + cNode.String() + "\nTAIL: " + list.tail.String() + "\n"
 
 	for cNode != nil {
 		str += cNode.String() + "\n"
