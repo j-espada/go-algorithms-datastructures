@@ -39,14 +39,38 @@ func TestAdjList_AddLink(t *testing.T) {
 	if adjList.e != len(edges) {
 		t.Error("Expected: ", len(edges), " got: ", adjList.e)
 	}
+	/*
+		for _, e := range edges {
+			u := e.u
+			contain := adjList.arr[u].Contains(e)
+			if true != contain {
+				t.Error("Expected: ", true, " got: ", contain, "EDGE: ", e, adjList.arr[u])
+			}
+		}
+
+	*/
+}
+
+func TestAdjList_RemoveLink(t *testing.T) {
+	n := 10
+	adjList := CreateAdjList(n)
+	edges := CreateEdges(n, 12)
+
+	for _, e := range edges {
+		adjList.AddLink(e)
+	}
+
+	if adjList.e != len(edges) {
+		t.Error("Expected: ", len(edges), " got: ", adjList.e)
+	}
 
 	for _, e := range edges {
 		u := e.u
 		v := e
+		adjList.RemoveLink(v)
 		contain := adjList.arr[u].Contains(v)
-		if true != contain {
+		if false != contain {
 			t.Error("Expected: ", true, " got: ", contain, "EDGE: ", e, adjList.arr[u])
 		}
 	}
-
 }

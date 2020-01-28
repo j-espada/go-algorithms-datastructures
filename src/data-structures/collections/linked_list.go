@@ -5,11 +5,11 @@ import (
 )
 
 type Node struct {
-	Value CollectionItem
+	Value interface{}
 	next  *Node
 }
 
-func createNode(item CollectionItem) *Node {
+func createNode(item interface{}) *Node {
 
 	return &Node{
 		item,
@@ -19,7 +19,7 @@ func createNode(item CollectionItem) *Node {
 
 func (node *Node) String() string {
 
-	return fmt.Sprint("Value: ", node.Value.String())
+	return fmt.Sprint("Value: ", node.Value)
 }
 
 type LinkedList struct {
@@ -39,7 +39,7 @@ func CreateLinkedList() *LinkedList {
 }
 
 // Appends the specified element to the end of this list
-func (list *LinkedList) Add(item CollectionItem) {
+func (list *LinkedList) Add(item interface{}) {
 	var newTail = createNode(item)
 	if list.head == nil {
 		list.head = newTail
@@ -63,15 +63,15 @@ func (list *LinkedList) AddAll(collectionInterface CollectionInterface) {
 }
 
 // Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
-func (list *LinkedList) IndexOf(item CollectionItem) int {
+func (list *LinkedList) IndexOf(item interface{}, fn equal) int {
 
 	var i = 0
 	var currentNode = list.head
-	var elm CollectionItem = nil
+	var elm interface{} = nil
 
 	for currentNode != nil {
 
-		if item.Equals(currentNode.Value) {
+		if fn(item, currentNode.Value) {
 			elm = item
 			break
 		}
@@ -88,15 +88,15 @@ func (list *LinkedList) IndexOf(item CollectionItem) int {
 }
 
 // Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
-func (list *LinkedList) LastIndexOf(item CollectionItem) int {
+func (list *LinkedList) LastIndexOf(item interface{}, fn equal) int {
 
 	var i, j = 0, 0
 	var currentNode = list.head
-	var elm CollectionItem = nil
+	var elm interface{} = nil
 
 	for currentNode != nil {
 
-		if item.Equals(currentNode.Value) {
+		if fn(item, currentNode.Value) {
 			elm = item
 			j = i
 		}
@@ -121,11 +121,11 @@ func (list *LinkedList) Clear() {
 }
 
 //Returns true if this list contains the specified element.
-func (list *LinkedList) Contains(item CollectionItem) bool {
+func (list *LinkedList) Contains(item interface{}, fn equal) bool {
 
 	var currentNode = list.head
 	for currentNode != nil {
-		if item.Equals(currentNode.Value) {
+		if fn(item, currentNode.Value) {
 			return true
 		}
 		currentNode = currentNode.next
@@ -140,14 +140,14 @@ func (list *LinkedList) Size() int {
 }
 
 // Removes the first occurrence of the specified element from this list, if it is present
-func (list *LinkedList) Remove(item CollectionItem) {
+func (list *LinkedList) Remove(item interface{}, fn equal) {
 
 	var current = list.head
 	var previous *Node = nil
 	var next *Node = nil
 	var found = false
 	for current != nil {
-		if item.Equals(current.Value) {
+		if fn(item, current.Value) {
 			found = true
 			break
 		}
@@ -179,7 +179,7 @@ func (list *LinkedList) Remove(item CollectionItem) {
 }
 
 // Returns the element at the specified position in this list.
-func (list *LinkedList) Get(i int) CollectionItem {
+func (list *LinkedList) Get(i int) interface{} {
 
 	if i > list.size || i < 0 {
 		return nil
@@ -187,7 +187,7 @@ func (list *LinkedList) Get(i int) CollectionItem {
 
 	var currentNode = list.head
 	var k = 0
-	var item CollectionItem = nil
+	var item interface{} = nil
 	for currentNode != nil {
 		if i == k {
 			item = currentNode.Value
@@ -248,9 +248,9 @@ func (list *LinkedList) SubList(fromIndex int, toIndex int) CollectionInterface 
 }
 
 // Returns an array containing all of the elements in this list in proper sequence (from first to last element)
-func (list *LinkedList) ToArray() []CollectionItem {
+func (list *LinkedList) ToArray() []interface{} {
 
-	var arr = make([]CollectionItem, list.size)
+	var arr = make([]interface{}, list.size)
 	var k = 0
 	var currentNode = list.head
 	for currentNode.next != nil {
@@ -262,18 +262,18 @@ func (list *LinkedList) ToArray() []CollectionItem {
 }
 
 // Returns the maximum element in the list or nil if list is empty
-func (list *LinkedList) Max() CollectionItem {
+func (list *LinkedList) Max(fn compare) interface{} {
 
 	if list.size == 0 {
 		return nil
 	} else {
 
 		var currentNode = list.head
-		var max CollectionItem = nil
+		var max interface{} = nil
 
 		for currentNode.next != nil {
 
-			if max == nil || max.Compare(currentNode.Value) > 0 {
+			if max == nil || fn(max, currentNode.Value) > 0 {
 				max = currentNode.Value
 			}
 			currentNode = currentNode.next
@@ -284,17 +284,17 @@ func (list *LinkedList) Max() CollectionItem {
 }
 
 // Returns the minimum element in the list or nil if list is empty
-func (list *LinkedList) Min() CollectionItem {
+func (list *LinkedList) Min(fn compare) interface{} {
 
 	if list.head == nil {
 		return nil
 	} else {
 		var currentNode = list.head
-		var min CollectionItem = nil
+		var min interface{} = nil
 
 		for currentNode.next != nil {
 
-			if min == nil || min.Compare(currentNode.Value) < 0 {
+			if min == nil || fn(min, currentNode.Value) < 0 {
 				min = currentNode.Value
 			}
 			currentNode = currentNode.next

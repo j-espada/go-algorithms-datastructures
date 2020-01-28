@@ -1,16 +1,18 @@
 package collections
 
+import "fmt"
+
 const DefaultCapacity = 20
 
 type ArrayList struct {
-	arr      []CollectionItem
+	arr      []interface{}
 	size     int
 	capacity int
 }
 
 func CreateArrayList(capacity int) *ArrayList {
 	return &ArrayList{
-		arr:      make([]CollectionItem, capacity),
+		arr:      make([]interface{}, capacity),
 		size:     0,
 		capacity: capacity,
 	}
@@ -18,20 +20,20 @@ func CreateArrayList(capacity int) *ArrayList {
 
 func CreateArrayListDefaultCapacity() *ArrayList {
 	return &ArrayList{
-		arr:      make([]CollectionItem, DefaultCapacity),
+		arr:      make([]interface{}, DefaultCapacity),
 		size:     0,
 		capacity: DefaultCapacity,
 	}
 }
 
 // Appends the specified element to the end of this list
-func (list *ArrayList) Add(item CollectionItem) {
+func (list *ArrayList) Add(item interface{}) {
 	if list.size < list.capacity {
 		list.arr[list.size] = item
 		list.size++
 	} else {
 		list.capacity = list.capacity * 2
-		var newArr = make([]CollectionItem, list.capacity)
+		var newArr = make([]interface{}, list.capacity)
 		for i := 0; i < list.size; i++ {
 			newArr[i] = list.arr[i]
 		}
@@ -50,10 +52,10 @@ func (list *ArrayList) AddAll(collectionInterface CollectionInterface) {
 }
 
 // Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
-func (list *ArrayList) IndexOf(item CollectionItem) int {
+func (list *ArrayList) IndexOf(item interface{}, fn equal) int {
 	var arr = list.arr
 	for i := 0; i < list.size; i++ {
-		if arr[i].Equals(item) {
+		if fn(arr[i], item) {
 			return i
 		}
 	}
@@ -61,11 +63,11 @@ func (list *ArrayList) IndexOf(item CollectionItem) int {
 }
 
 // Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
-func (list *ArrayList) LastIndexOf(item CollectionItem) int {
+func (list *ArrayList) LastIndexOf(item interface{}, fn equal) int {
 	var arr = list.arr
 	var res = -1
 	for i := 0; i < list.size; i++ {
-		if arr[i].Equals(item) {
+		if fn(arr[i], item) {
 			res = i
 		}
 	}
@@ -76,14 +78,14 @@ func (list *ArrayList) LastIndexOf(item CollectionItem) int {
 func (list *ArrayList) Clear() {
 	list.size = 0
 	list.capacity = DefaultCapacity
-	list.arr = make([]CollectionItem, DefaultCapacity)
+	list.arr = make([]interface{}, DefaultCapacity)
 }
 
 //Returns true if this list contains the specified element.
-func (list *ArrayList) Contains(item CollectionItem) bool {
+func (list *ArrayList) Contains(item interface{}, fn equal) bool {
 	var arr = list.arr
 	for i := 0; i < list.size; i++ {
-		if arr[i].Equals(item) {
+		if fn(arr[i], item) {
 			return true
 		}
 	}
@@ -101,10 +103,10 @@ func (list *ArrayList) Capacity() int {
 }
 
 // Removes the first occurrence of the specified element from this list, if it is present
-func (list *ArrayList) Remove(item CollectionItem) {
-	var indexItem = list.IndexOf(item)
+func (list *ArrayList) Remove(item interface{}, fn equal) {
+	var indexItem = list.IndexOf(item, fn)
 	if indexItem != -1 {
-		var newArr = make([]CollectionItem, list.capacity)
+		var newArr = make([]interface{}, list.capacity)
 		var counter = 0
 		for i := 0; i < list.size; i++ {
 			if i != indexItem {
@@ -118,7 +120,7 @@ func (list *ArrayList) Remove(item CollectionItem) {
 }
 
 // Returns the element at the specified position in this list.
-func (list *ArrayList) Get(i int) CollectionItem {
+func (list *ArrayList) Get(i int) interface{} {
 	if i >= list.size || i < 0 {
 		return nil
 	}
@@ -138,8 +140,8 @@ func (list *ArrayList) SubList(fromIndex int, toIndex int) CollectionInterface {
 }
 
 // Returns an array containing all of the elements in this list in proper sequence (from first to last element)
-func (list *ArrayList) ToArray() []CollectionItem {
-	var arr = make([]CollectionItem, list.size)
+func (list *ArrayList) ToArray() []interface{} {
+	var arr = make([]interface{}, list.size)
 	for i := 0; i < list.size; i++ {
 		arr[i] = list.arr[i]
 	}
@@ -147,11 +149,11 @@ func (list *ArrayList) ToArray() []CollectionItem {
 }
 
 // Returns the maximum element in the list or nil if list is empty
-func (list *ArrayList) Max() CollectionItem {
-	var result CollectionItem = nil
+func (list *ArrayList) Max(fn compare) interface{} {
+	var result interface{} = nil
 	for i := 0; i < list.size; i++ {
 		var item = list.arr[i]
-		if result == nil || result.Compare(item) > 0 {
+		if result == nil || fn(item, result) > 0 {
 			result = item
 		}
 	}
@@ -159,11 +161,11 @@ func (list *ArrayList) Max() CollectionItem {
 }
 
 // Returns the minimum element in the list or nil if list is empty
-func (list *ArrayList) Min() CollectionItem {
-	var result CollectionItem = nil
+func (list *ArrayList) Min(fn compare) interface{} {
+	var result interface{} = nil
 	for i := 0; i < list.size; i++ {
 		var item = list.arr[i]
-		if result == nil || result.Compare(item) < 0 {
+		if result == nil || fn(item, result) < 0 {
 			result = item
 		}
 	}
@@ -176,7 +178,7 @@ func (list *ArrayList) String() string {
 	str += "Size: " + string(list.size) + "\n"
 	for i := 0; i < list.size; i++ {
 		var item = list.arr[i]
-		str += item.String() + " "
+		str += fmt.Sprint(item) + " "
 	}
 	return str
 }

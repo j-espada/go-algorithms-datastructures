@@ -1,37 +1,44 @@
 package graph
 
 import (
-	"../collections"
+	"container/list"
+	"fmt"
+	_ "reflect"
 )
 
 type AdjList struct {
 	n   int
 	e   int
-	arr []collections.CollectionInterface
+	arr []*list.List
 }
 
 func CreateAdjList(n int) *AdjList {
 	res := &AdjList{
 		n:   n,
 		e:   0,
-		arr: make([]collections.CollectionInterface, n),
+		arr: make([]*list.List, n),
 	}
 	for i := 0; i < n; i++ {
-		res.arr[i] = collections.CreateLinkedList()
+		res.arr[i] = list.New()
 	}
 	return res
 }
 
 func (adjList *AdjList) AddLink(edge Edge) {
-	adjList.arr[edge.u].Add(edge)
+	adjList.checkBound(edge.u)
+	adjList.arr[edge.u].PushBack(edge)
+	//reflect.DeepEqual()
 	adjList.e++
 }
 
 func (adjList *AdjList) RemoveLink(edge Edge) {
-	adjList.arr[edge.u].Remove(edge)
+	adjList.checkBound(edge.u)
+	//adjList.arr[edge.u].
+	adjList.e--
 }
 
-func (adjList *AdjList) Neighbors(u int) collections.CollectionInterface {
+func (adjList *AdjList) Neighbors(u int) *list.List {
+	adjList.checkBound(u)
 	return adjList.arr[u]
 }
 
@@ -40,4 +47,12 @@ func (adjList *AdjList) checkBound(v int) bool {
 		panic("Limit exception")
 	}
 	return true
+}
+
+func (adjList *AdjList) String() string {
+	str := ""
+	for i := 0; i < adjList.n; i++ {
+		str += string(i) + ": " + fmt.Sprint(adjList.arr[i])
+	}
+	return str
 }

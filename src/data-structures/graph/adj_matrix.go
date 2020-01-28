@@ -1,19 +1,21 @@
 package graph
 
-import "../collections"
+import (
+	"container/list"
+)
 
 type AdjMatrix struct {
 	n      int
-	matrix [][]Comparable
+	matrix [][]interface{}
 }
 
 func CreateAdjMatrix(n int) *AdjMatrix {
 	matrix := &AdjMatrix{
 		n:      n,
-		matrix: make([][]Comparable, n),
+		matrix: make([][]interface{}, n),
 	}
 	for i := range matrix.matrix {
-		matrix.matrix[i] = make([]Comparable, n)
+		matrix.matrix[i] = make([]interface{}, n)
 	}
 	return matrix
 }
@@ -39,13 +41,13 @@ func checkEdgeBounds(u int, v int, n int) bool {
 	return true
 }
 
-func (matrix *AdjMatrix) Neighbors(u int) collections.CollectionInterface {
-	l := collections.CreateLinkedList()
+func (matrix *AdjMatrix) Neighbors(u int) *list.List {
+	l := list.New()
 	for i := 0; i < matrix.n; i++ {
 		k := matrix.matrix[u][i]
-		edge := CreateEdge(u, i, k)
 		if k != nil {
-			l.Add(edge)
+			edge := CreateEdge(u, i, k)
+			l.PushBack(edge)
 		}
 	}
 	return l

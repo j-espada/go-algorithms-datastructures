@@ -1,46 +1,39 @@
 package collections
 
 import (
-	"fmt"
 	"math/rand"
 )
 
 const MaxValue = 20
 
-type T struct {
-	Value int
-}
-
-func (item T) Equals(other CollectionItem) bool {
-	otherT, ok := other.(T)
-	if !ok {
-		return false
-	}
-	return otherT.Value == item.Value
-}
-
-func (item T) Compare(other CollectionItem) int {
-	otherT, ok := other.(T)
-	if !ok {
-		panic("The two types must be the same")
-	}
-	return otherT.Value - item.Value
-}
-
-func (item T) String() string {
-	return fmt.Sprint(item.Value)
-}
-
-func generateData(n int) []T {
-	var data = make([]T, n)
+func generateData(n int) []int {
+	var data = make([]int, n)
 	for i := 0; i < n; i++ {
-		data[i] = T{Value: rand.Int() % MaxValue}
+		data[i] = rand.Int() % MaxValue
 	}
 	return data
 }
 
-func insertData(lst CollectionInterface, data []T) {
+func insertData(lst CollectionInterface, data []int) {
 	for _, data := range data {
 		lst.Add(data)
 	}
+}
+
+func Equals(o1 interface{}, o2 interface{}) bool {
+	oo1, ok := o1.(int)
+	oo2, ok2 := o2.(int)
+	if ok != true || ok2 != true {
+		panic("Invalid cast")
+	}
+	return oo1 == oo2
+}
+
+func Comparable(o1 interface{}, o2 interface{}) int {
+	oo1, ok := o1.(int)
+	oo2, ok2 := o2.(int)
+	if ok != true || ok2 != true {
+		panic("Invalid cast")
+	}
+	return oo1 - oo2
 }
