@@ -1,13 +1,12 @@
 package collections
 
-/*
 import (
 	"reflect"
 	"testing"
 )
 
 func TestCreateNode(t *testing.T) {
-	var val = T{Value: 10}
+	var val = 10
 	var node = createNode(val)
 	if node.Value != val {
 		t.Error("Expected: ", val, "got: ", node.Value)
@@ -43,7 +42,7 @@ func TestLinkedList_Add(t *testing.T) {
 	var k = 0
 	var currentNode = linkedList.head
 	for currentNode != nil {
-		if !currentNode.Value.Equals(dataToInsert[k]) {
+		if Equals(currentNode.Value, dataToInsert[k]) {
 			t.Error("Expected: ", dataToInsert[k], "got: ", currentNode.Value)
 		}
 		currentNode = currentNode.next
@@ -66,7 +65,7 @@ func TestLinkedList_AddAll(t *testing.T) {
 	var cNode = linkedList2.head.next
 	for cNode != nil {
 
-		if true != linkedList.Contains(cNode.Value) {
+		if true != linkedList.Contains(cNode.Value, Equals) {
 			t.Error("Expected to have: ", cNode.Value)
 		}
 		cNode = cNode.next
@@ -359,7 +358,7 @@ func TestLinkedList_ToArray(t *testing.T) {
 
 func TestLinkedList_Max(t *testing.T) {
 	var linkedList = CreateLinkedList()
-	var maxValEmpty = linkedList.Max()
+	var maxValEmpty = linkedList.Max(Comparable)
 
 	if nil != maxValEmpty {
 		t.Error("Expected: ", nil, " got: ", maxValEmpty)
@@ -367,7 +366,7 @@ func TestLinkedList_Max(t *testing.T) {
 
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
 	insertData(linkedList, dataToInsert)
-	var max = linkedList.Max()
+	var max = linkedList.Max(Comparable)
 	var maxValueData = T{Value: 55}
 
 	if max != maxValueData {
@@ -377,7 +376,7 @@ func TestLinkedList_Max(t *testing.T) {
 
 func TestLinkedList_Min(t *testing.T) {
 	var linkedList = CreateLinkedList()
-	var minValEmpty = linkedList.Min()
+	var minValEmpty = linkedList.Min(Comparable)
 
 	if nil != minValEmpty {
 		t.Error("Expected: ", nil, " got: ", minValEmpty)
@@ -385,12 +384,10 @@ func TestLinkedList_Min(t *testing.T) {
 
 	var dataToInsert = []T{{Value: 10}, {Value: 2}, {Value: 55}, {Value: 55}}
 	insertData(linkedList, dataToInsert)
-	var min = linkedList.Min()
+	var min = linkedList.Min(Comparable)
 	var minValueData = T{Value: 2}
 
 	if min != minValueData {
 		t.Error("Expected: ", minValueData, " got: ", min)
 	}
 }
-
-*/

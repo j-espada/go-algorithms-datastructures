@@ -150,10 +150,10 @@ func (list *ArrayList) ToArray() []interface{} {
 
 // Returns the maximum element in the list or nil if list is empty
 func (list *ArrayList) Max(fn compare) interface{} {
-	var result interface{} = nil
+	var result = list.arr[0]
 	for i := 0; i < list.size; i++ {
 		var item = list.arr[i]
-		if result == nil || fn(item, result) > 0 {
+		if fn(item, result) > 0 {
 			result = item
 		}
 	}
