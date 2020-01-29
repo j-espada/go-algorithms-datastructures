@@ -273,7 +273,7 @@ func (list *LinkedList) Max(fn compare) interface{} {
 
 		for currentNode.next != nil {
 
-			if max == nil || fn(max, currentNode.Value) > 0 {
+			if max == nil || fn(currentNode.Value, max) > 0 {
 				max = currentNode.Value
 			}
 			currentNode = currentNode.next
@@ -294,7 +294,7 @@ func (list *LinkedList) Min(fn compare) interface{} {
 
 		for currentNode.next != nil {
 
-			if min == nil || fn(min, currentNode.Value) < 0 {
+			if min == nil || fn(currentNode.Value, min) < 0 {
 				min = currentNode.Value
 			}
 			currentNode = currentNode.next
